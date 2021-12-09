@@ -1,0 +1,50 @@
+name: 'Java Compatibility'
+on:
+  workflow_dispatch:
+    inputs:
+      java-version:
+        default: '11'
+        required: true
+        description: "Java version to run test"
+
+jobs:
+  run-test:
+    name: "run library tests on ubuntu with Java ${{ github.event.inputs.java-version }}"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "install Java ${{ github.event.inputs.java-version }}"
+        uses: actions/setup-java@v2
+        with:
+          java-version: "${{ github.event.inputs.java-version }}"
+          distribution: 'zulu'
+
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: cache wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-wrapper-
+
+      - name: cache library
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-cache-
+
+      - name: run test
+        run: ./gradlew test
+
+      - name: store results
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: test-results
+          path: |
+            lib/build/reports/
