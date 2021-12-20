@@ -17,6 +17,6 @@ class AddTest {
     void failedTest() {
         Add add = new Add(1);
         int actual = add.calculate(3);
-        assertEquals(3, actual);
+        assertEquals(4, actual);
     }
 }
