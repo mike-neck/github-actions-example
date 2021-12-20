@@ -18,7 +18,7 @@ class LongRunningTest {
 
     @TestFactory
     Stream<DynamicTest> longRunningTests() {
-        return IntStream.range(1, 100)
+        return IntStream.range(1, 20)
                 .mapToLong(i -> i * 100L)
                 .mapToObj(t ->
                         DynamicTest.dynamicTest(
