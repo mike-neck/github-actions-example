@@ -4,8 +4,6 @@ pipeline {
     stage('test') {
       steps {
         sh './gradlew dependencies --configuration=compileClasspath'
-      }
-      steps {
         sh './gradlew test'
       }
     }
