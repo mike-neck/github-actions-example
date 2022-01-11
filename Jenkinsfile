@@ -2,8 +2,12 @@ pipeline {
   agent any
   stages {
     stage('test') {
-      sh './gradlew dependencies --configuration=compileClasspath'
-      sh './gradlew test'
+      steps {
+        sh './gradlew dependencies --configuration=compileClasspath'
+      }
+      steps {
+        sh './gradlew test'
+      }
     }
   }
   post {
