@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        sh './gradlew dependencies --configuration=runtimeClasspath'
+        sh './gradlew :lib:dependencies --configuration=compileClasspath'
         sh './gradlew test'
       }
     }
